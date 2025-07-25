@@ -239,3 +239,153 @@ footer {
 .btn:hover {
     transform: translateY(-1px);
 }
+
+/* ===== ESTILOS PARA MODALES DE CHECKOUT ===== */
+
+/* Estilos para modales */
+.modal-header {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6;
+}
+
+.modal-lg {
+    max-width: 900px;
+}
+
+/* Estilos para el formulario de checkout */
+.form-label {
+    font-weight: 600;
+    color: #495057;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Estilos para el resumen en el modal */
+#modal-cart-summary {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#modal-cart-summary .table {
+    margin-bottom: 0;
+}
+
+#modal-cart-summary .table td {
+    padding: 0.5rem;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Estilos para la boleta */
+.invoice-container {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.invoice-header {
+    text-align: center;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.invoice-header h1 {
+    color: #007bff;
+    margin: 0;
+    font-size: 2rem;
+}
+
+.invoice-header h2 {
+    color: #666;
+    margin: 5px 0;
+    font-size: 1.5rem;
+}
+
+.invoice-section {
+    margin-bottom: 30px;
+}
+
+.invoice-section h3 {
+    color: #007bff;
+    border-bottom: 1px solid #007bff;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.invoice-table th,
+.invoice-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.invoice-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.invoice-table .text-right {
+    text-align: right;
+}
+
+.invoice-table .text-center {
+    text-align: center;
+}
+
+/* Estilos para el resumen de totales */
+.totals-table {
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+}
+
+.totals-table td {
+    padding: 5px;
+    border: none;
+}
+
+.totals-table .total-row {
+    border-top: 2px solid #007bff;
+    background-color: #e7f3ff;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.totals-table .total-row td {
+    padding: 10px;
+}
+
+/* Responsive para modales */
+@media (max-width: 768px) {
+    .modal-lg {
+        max-width: 95%;
+    }
+    
+    .modal-dialog {
+        margin: 10px;
+    }
+    
+    #modal-cart-summary {
+        font-size: 0.9rem;
+    }
+}
+
+/* Estilos para elementos de confirmación */
+.purchase-success-icon {
+    font-size: 4rem;
+    color: #28a745;
+}

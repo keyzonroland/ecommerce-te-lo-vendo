@@ -266,7 +266,7 @@ function updateCartDisplay() {
                 </div>
                 <div class="d-grid gap-2">
                     <button class="btn btn-success btn-lg" id="checkout-btn">
-                        <i class="fas fa-credit-card"></i> Finalizar Compra
+                        <i class="fas fa-file-invoice-dollar"></i> Proceder al Checkout
                     </button>
                     <button class="btn btn-outline-secondary" id="clear-cart-btn">
                         <i class="fas fa-broom"></i> Limpiar Carrito
@@ -277,6 +277,229 @@ function updateCartDisplay() {
     `;
     
     cartSummary.innerHTML = resumenHTML;
+}
+
+// Función para mostrar el resumen en el modal
+function updateModalCartSummary() {
+    const modalSummary = document.getElementById('modal-cart-summary');
+    
+    if (cart.length === 0) {
+        modalSummary.innerHTML = '<p class="text-muted">No hay productos en el carrito</p>';
+        return;
+    }
+    
+    const totalConIVA = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const valorNeto = Math.round(totalConIVA / 1.19);
+    const iva = totalConIVA - valorNeto;
+    
+    let cargoDespacho = 0;
+    let totalFinal = totalConIVA;
+    
+    if (totalConIVA < 100000) {
+        cargoDespacho = Math.round(totalConIVA * 0.05);
+        totalFinal = totalConIVA + cargoDespacho;
+    }
+    
+    let summaryHTML = `
+        <div class="row">
+            <div class="col-md-8">
+                <h6>Productos (${cart.length}):</h6>
+                <ul class="list-unstyled">`;
+    
+    cart.forEach(item => {
+        summaryHTML += `
+                    <li class="mb-1">
+                        <strong>${item.name}</strong><br>
+                        <small class="text-muted">
+                            Código: ${item.code} | Cantidad: ${item.quantity} | 
+                            $${item.price.toLocaleString('es-CL')} c/u = $${(item.price * item.quantity).toLocaleString('es-CL')}
+                        </small>
+                    </li>`;
+    });
+    
+    summaryHTML += `
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <table class="table table-sm">
+                    <tr>
+                        <td><strong>Valor Neto:</strong></td>
+                        <td class="text-end">$${valorNeto.toLocaleString('es-CL')}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IVA (19%):</strong></td>
+                        <td class="text-end">$${iva.toLocaleString('es-CL')}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Subtotal:</strong></td>
+                        <td class="text-end">$${totalConIVA.toLocaleString('es-CL')}</td>
+                    </tr>`;
+    
+    if (cargoDespacho > 0) {
+        summaryHTML += `
+                    <tr>
+                        <td><strong>Despacho (5%):</strong></td>
+                        <td class="text-end text-warning">$${cargoDespacho.toLocaleString('es-CL')}</td>
+                    </tr>`;
+    } else {
+        summaryHTML += `
+                    <tr>
+                        <td><strong>Despacho:</strong></td>
+                        <td class="text-end text-success">GRATIS</td>
+                    </tr>`;
+    }
+    
+    summaryHTML += `
+                    <tr class="table-success">
+                        <td><strong>TOTAL:</strong></td>
+                        <td class="text-end"><strong>$${totalFinal.toLocaleString('es-CL')}</strong></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    `;
+    
+    modalSummary.innerHTML = summaryHTML;
+}
+
+// Función para generar la boleta electrónica
+function generateInvoice(customerData) {
+    const now = new Date();
+    const invoiceNumber = 'TLV-' + now.getFullYear() + (now.getMonth() + 1).toString().padStart(2, '0') + now.getDate().toString().padStart(2, '0') + '-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    
+    const totalConIVA = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const valorNeto = Math.round(totalConIVA / 1.19);
+    const iva = totalConIVA - valorNeto;
+    
+    let cargoDespacho = 0;
+    let totalFinal = totalConIVA;
+    
+    if (totalConIVA < 100000) {
+        cargoDespacho = Math.round(totalConIVA * 0.05);
+        totalFinal = totalConIVA + cargoDespacho;
+    }
+    
+    let invoiceHTML = `
+        <div style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; border: 1px solid #ddd;">
+            <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #007bff; padding-bottom: 20px;">
+                <h1 style="color: #007bff; margin: 0;">TE LO VENDO</h1>
+                <h2 style="color: #666; margin: 5px 0;">BOLETA ELECTRÓNICA</h2>
+                <p style="margin: 5px 0; font-size: 14px;"><strong>N° ${invoiceNumber}</strong></p>
+                <p style="margin: 5px 0; font-size: 14px;">Fecha: ${now.toLocaleDateString('es-CL')} - ${now.toLocaleTimeString('es-CL')}</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <div style="display: inline-block; width: 48%; vertical-align: top;">
+                    <h3 style="color: #007bff; border-bottom: 1px solid #007bff; padding-bottom: 5px;">DATOS DEL CLIENTE</h3>
+                    <p><strong>Nombre:</strong> ${customerData.nombre}</p>
+                    <p><strong>Email:</strong> ${customerData.email}</p>
+                    <p><strong>Teléfono:</strong> ${customerData.telefono || 'No proporcionado'}</p>
+                </div>
+                <div style="display: inline-block; width: 48%; vertical-align: top; margin-left: 4%;">
+                    <h3 style="color: #007bff; border-bottom: 1px solid #007bff; padding-bottom: 5px;">DIRECCIÓN DE DESPACHO</h3>
+                    <p><strong>Dirección:</strong> ${customerData.direccion}</p>
+                    <p><strong>Comuna:</strong> ${customerData.comuna}</p>
+                    <p><strong>Región:</strong> ${customerData.region}</p>
+                    <p><strong>Recibe:</strong> ${customerData.quienRecibe}</p>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #007bff; border-bottom: 1px solid #007bff; padding-bottom: 5px;">DETALLE DE PRODUCTOS</h3>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                    <thead>
+                        <tr style="background-color: #f8f9fa;">
+                            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Código</th>
+                            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Producto</th>
+                            <th style="border: 1px solid #ddd; padding: 8px; text-align: center;">Cantidad</th>
+                            <th style="border: 1px solid #ddd; padding: 8px; text-align: right;">Precio Unit.</th>
+                            <th style="border: 1px solid #ddd; padding: 8px; text-align: right;">Total Ítem</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+    
+    cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        invoiceHTML += `
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 8px;">${item.code}</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">${item.name}</td>
+                            <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${item.quantity}</td>
+                            <td style="border: 1px solid #ddd; padding: 8px; text-align: right;">$${item.price.toLocaleString('es-CL')}</td>
+                            <td style="border: 1px solid #ddd; padding: 8px; text-align: right;">$${itemTotal.toLocaleString('es-CL')}</td>
+                        </tr>`;
+    });
+    
+    invoiceHTML += `
+                    </tbody>
+                </table>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #007bff; border-bottom: 1px solid #007bff; padding-bottom: 5px;">RESUMEN DE LA COMPRA</h3>
+                <table style="width: 100%; max-width: 400px; margin-left: auto;">
+                    <tr>
+                        <td style="padding: 5px; text-align: right;"><strong>Monto Neto:</strong></td>
+                        <td style="padding: 5px; text-align: right; width: 120px;">$${valorNeto.toLocaleString('es-CL')}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px; text-align: right;"><strong>IVA (19%):</strong></td>
+                        <td style="padding: 5px; text-align: right;">$${iva.toLocaleString('es-CL')}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px; text-align: right;"><strong>Monto Bruto:</strong></td>
+                        <td style="padding: 5px; text-align: right;">$${totalConIVA.toLocaleString('es-CL')}</td>
+                    </tr>`;
+    
+    if (cargoDespacho > 0) {
+        invoiceHTML += `
+                    <tr>
+                        <td style="padding: 5px; text-align: right;"><strong>Cargo Despacho (5%):</strong></td>
+                        <td style="padding: 5px; text-align: right; color: #ff6b35;">$${cargoDespacho.toLocaleString('es-CL')}</td>
+                    </tr>`;
+    } else {
+        invoiceHTML += `
+                    <tr>
+                        <td style="padding: 5px; text-align: right;"><strong>Despacho:</strong></td>
+                        <td style="padding: 5px; text-align: right; color: #28a745;"><strong>GRATIS</strong></td>
+                    </tr>`;
+    }
+    
+    invoiceHTML += `
+                    <tr style="border-top: 2px solid #007bff; background-color: #e7f3ff;">
+                        <td style="padding: 10px; text-align: right; font-size: 18px;"><strong>TOTAL FINAL:</strong></td>
+                        <td style="padding: 10px; text-align: right; font-size: 18px; color: #007bff;"><strong>$${totalFinal.toLocaleString('es-CL')}</strong></td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 12px;">
+                <p><strong>¡Gracias por su compra!</strong></p>
+                <p>Esta es una boleta electrónica generada automáticamente.</p>
+                <p>Te lo Vendo - Ecommerce | contacto@telovendo.cl | www.telovendo.cl</p>
+            </div>
+        </div>
+    `;
+    
+    return {
+        html: invoiceHTML,
+        invoiceNumber: invoiceNumber,
+        totalFinal: totalFinal,
+        customerData: customerData,
+        items: cart.length,
+        date: now.toLocaleDateString('es-CL')
+    };
+}
+
+// Función para simular el envío de correo
+function sendInvoiceByEmail(invoiceData) {
+    return new Promise((resolve) => {
+        // Simulamos un delay de envío de correo
+        setTimeout(() => {
+            console.log('Boleta enviada por correo:', invoiceData);
+            resolve(true);
+        }, 2000);
+    });
 }
 
 // Función para agregar productos seleccionados con checkbox
@@ -370,42 +593,84 @@ document.addEventListener('click', function(e) {
     // Finalizar compra
     if (e.target.id === 'checkout-btn') {
         if (cart.length > 0) {
-            const totalConIVA = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const valorNeto = Math.round(totalConIVA / 1.19);
-            const iva = totalConIVA - valorNeto;
-            
-            let cargoDespacho = 0;
-            let totalFinal = totalConIVA;
-            
-            if (totalConIVA < 100000) {
-                cargoDespacho = Math.round(totalConIVA * 0.05);
-                totalFinal = totalConIVA + cargoDespacho;
-            }
-            
-            let resumenCompra = `¡Compra finalizada!
-            
-Resumen:
-• Productos: ${cart.length}
-• Valor Neto: $${valorNeto.toLocaleString('es-CL')}
-• IVA (19%): $${iva.toLocaleString('es-CL')}
-• Subtotal: $${totalConIVA.toLocaleString('es-CL')}`;
-
-            if (cargoDespacho > 0) {
-                resumenCompra += `
-• Cargo despacho (5%): $${cargoDespacho.toLocaleString('es-CL')}`;
-            } else {
-                resumenCompra += `
-• Despacho: GRATIS (compra > $100.000)`;
-            }
-            
-            resumenCompra += `
-• TOTAL FINAL: $${totalFinal.toLocaleString('es-CL')}
-
-¡Gracias por tu compra!`;
-            
-            alert(resumenCompra);
-            clearCart();
+            updateModalCartSummary();
+            const checkoutModal = new bootstrap.Modal(document.getElementById('checkoutModal'));
+            checkoutModal.show();
+        } else {
+            showNotification('Tu carrito está vacío', 'warning');
         }
+    }
+    
+    // Confirmar compra y enviar boleta
+    if (e.target.id === 'confirm-purchase-btn') {
+        const form = document.getElementById('checkout-form');
+        
+        // Validar formulario
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+        
+        // Recopilar datos del cliente
+        const customerData = {
+            nombre: document.getElementById('cliente-nombre').value,
+            email: document.getElementById('cliente-email').value,
+            telefono: document.getElementById('cliente-telefono').value,
+            direccion: document.getElementById('direccion').value,
+            comuna: document.getElementById('comuna').value,
+            region: document.getElementById('region').value,
+            quienRecibe: document.getElementById('quien-recibe').value
+        };
+        
+        // Generar boleta
+        const invoiceData = generateInvoice(customerData);
+        
+        // Mostrar loading
+        const confirmBtn = document.getElementById('confirm-purchase-btn');
+        const originalText = confirmBtn.innerHTML;
+        confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
+        confirmBtn.disabled = true;
+        
+        // Simular envío de correo
+        sendInvoiceByEmail(invoiceData).then(() => {
+            // Cerrar modal de checkout
+            const checkoutModal = bootstrap.Modal.getInstance(document.getElementById('checkoutModal'));
+            checkoutModal.hide();
+            
+            // Mostrar modal de confirmación
+            document.getElementById('purchase-details').innerHTML = `
+                <div class="card">
+                    <div class="card-body">
+                        <h6><i class="fas fa-receipt"></i> Detalles de la Compra</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>N° Boleta:</strong> ${invoiceData.invoiceNumber}</p>
+                                <p><strong>Cliente:</strong> ${customerData.nombre}</p>
+                                <p><strong>Email:</strong> ${customerData.email}</p>
+                                <p><strong>Productos:</strong> ${invoiceData.items} ítem(s)</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Fecha:</strong> ${invoiceData.date}</p>
+                                <p><strong>Dirección:</strong> ${customerData.direccion}</p>
+                                <p><strong>Comuna:</strong> ${customerData.comuna}</p>
+                                <p><strong>Total:</strong> <span class="text-success fs-5">$${invoiceData.totalFinal.toLocaleString('es-CL')}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const purchaseModal = new bootstrap.Modal(document.getElementById('purchaseConfirmModal'));
+            purchaseModal.show();
+            
+            // Limpiar carrito
+            clearCart();
+            
+            // Resetear formulario
+            form.reset();
+            confirmBtn.innerHTML = originalText;
+            confirmBtn.disabled = false;
+        });
     }
 });
 

@@ -65,6 +65,143 @@
         <div id="cart-items"></div>
         <div id="cart-summary"></div>
     </section>
+
+    <!-- Modal para datos del cliente -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="checkoutModalLabel">
+                        <i class="fas fa-file-invoice-dollar"></i> Finalizar Compra
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="checkout-form">
+                        <div class="row">
+                            <!-- Datos del Cliente -->
+                            <div class="col-md-6">
+                                <h6 class="text-primary mb-3"><i class="fas fa-user"></i> Datos del Cliente</h6>
+                                
+                                <div class="mb-3">
+                                    <label for="cliente-nombre" class="form-label">Nombre Completo *</label>
+                                    <input type="text" class="form-control" id="cliente-nombre" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="cliente-email" class="form-label">Correo Electrónico *</label>
+                                    <input type="email" class="form-control" id="cliente-email" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="cliente-telefono" class="form-label">Teléfono</label>
+                                    <input type="tel" class="form-control" id="cliente-telefono">
+                                </div>
+                            </div>
+                            
+                            <!-- Dirección de Despacho -->
+                            <div class="col-md-6">
+                                <h6 class="text-primary mb-3"><i class="fas fa-truck"></i> Dirección de Despacho</h6>
+                                
+                                <div class="mb-3">
+                                    <label for="direccion" class="form-label">Dirección *</label>
+                                    <input type="text" class="form-control" id="direccion" placeholder="Calle, Número" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="comuna" class="form-label">Comuna *</label>
+                                    <select class="form-control" id="comuna" required>
+                                        <option value="">Seleccionar comuna...</option>
+                                        <option value="Santiago">Santiago</option>
+                                        <option value="Providencia">Providencia</option>
+                                        <option value="Las Condes">Las Condes</option>
+                                        <option value="Vitacura">Vitacura</option>
+                                        <option value="Ñuñoa">Ñuñoa</option>
+                                        <option value="La Reina">La Reina</option>
+                                        <option value="Maipú">Maipú</option>
+                                        <option value="Puente Alto">Puente Alto</option>
+                                        <option value="San Miguel">San Miguel</option>
+                                        <option value="Otra">Otra</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="region" class="form-label">Región *</label>
+                                    <select class="form-control" id="region" required>
+                                        <option value="">Seleccionar región...</option>
+                                        <option value="Región Metropolitana">Región Metropolitana</option>
+                                        <option value="Región de Valparaíso">Región de Valparaíso</option>
+                                        <option value="Región del Biobío">Región del Biobío</option>
+                                        <option value="Región de La Araucanía">Región de La Araucanía</option>
+                                        <option value="Región de Los Lagos">Región de Los Lagos</option>
+                                        <option value="Otra">Otra</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="quien-recibe" class="form-label">¿Quién recibe? *</label>
+                                    <input type="text" class="form-control" id="quien-recibe" placeholder="Nombre de quien recibe el pedido" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Resumen de la compra en el modal -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-3"><i class="fas fa-receipt"></i> Resumen de tu Compra</h6>
+                                <div id="modal-cart-summary" class="border rounded p-3 bg-light">
+                                    <!-- Se llena dinámicamente -->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-success" id="confirm-purchase-btn">
+                        <i class="fas fa-credit-card"></i> Confirmar Compra y Enviar Boleta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación de compra -->
+    <div class="modal fade" id="purchaseConfirmModal" tabindex="-1" aria-labelledby="purchaseConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="purchaseConfirmModalLabel">
+                        <i class="fas fa-check-circle"></i> ¡Compra Realizada con Éxito!
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                        <h4 class="text-success mt-3">¡Gracias por tu compra!</h4>
+                        <p class="text-muted">Tu boleta ha sido enviada al correo electrónico proporcionado.</p>
+                    </div>
+                    
+                    <div id="purchase-details">
+                        <!-- Se llena con los detalles de la compra -->
+                    </div>
+                    
+                    <div class="alert alert-info mt-3">
+                        <i class="fas fa-envelope"></i> 
+                        <strong>Boleta enviada por correo:</strong> Revisa tu bandeja de entrada y spam. 
+                        La boleta incluye todos los detalles de tu compra.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.reload()">
+                        <i class="fas fa-shopping-cart"></i> Realizar Nueva Compra
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <footer class="bg-dark text-white text-center py-3">
         <small>&copy; 2025 Te lo Vendo - Todos los derechos reservados.</small>
