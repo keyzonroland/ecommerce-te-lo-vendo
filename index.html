@@ -12,12 +12,38 @@
     <header>
         <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
             <div class="container">
-                <a class="navbar-brand" href="#">Te lo Vendo</a>
+                <a class="navbar-brand" href="#">
+                    <i class="fas fa-store"></i> Te lo Vendo
+                </a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#productos">Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#carrito">Carrito</a>
+                        </li>
+                    </ul>
+                    
+                    <div class="navbar-nav">
+                        <button class="btn btn-outline-light position-relative" id="cart-nav-btn" onclick="scrollToCart()">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill" id="cart-count">
+                                0
+                            </span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </nav>
     </header>
     
-    <main>
+    <main id="productos">
         <div class="container my-5">
             <div class="row mb-4">
                 <div class="col-md-8">
@@ -34,7 +60,7 @@
         </div>
     </main>
     
-    <section class="container mb-5">
+    <section class="container mb-5" id="carrito">
         <h3><i class="fas fa-shopping-cart"></i> Carrito de Compras</h3>
         <div id="cart-items"></div>
         <div id="cart-summary"></div>

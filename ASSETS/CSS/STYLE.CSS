@@ -13,6 +13,53 @@ body {
     color: #ffffff !important;
 }
 
+.navbar-brand i {
+    margin-right: 0.5rem;
+    color: #28a745;
+}
+
+.nav-link {
+    color: #ffffff !important;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #28a745 !important;
+}
+
+/* Botón del carrito en navbar */
+#cart-nav-btn {
+    border: 2px solid #ffffff;
+    transition: all 0.3s ease;
+}
+
+#cart-nav-btn:hover {
+    background-color: #28a745;
+    border-color: #28a745;
+    transform: scale(1.05);
+}
+
+/* Badge del contador del carrito */
+#cart-count {
+    font-size: 0.7rem;
+    min-width: 1.2rem;
+    height: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Animación pulse para el badge */
+.animate-pulse {
+    animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
 /* Título principal */
 h2 {
     color: #333;

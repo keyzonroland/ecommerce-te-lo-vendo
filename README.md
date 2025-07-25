@@ -99,15 +99,6 @@ Las contribuciones son bienvenidas. Por favor:
 4. Push a la rama (`git push origin feature/nueva-caracteristica`)
 5. Abre un Pull Request
 
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
-
-## 👨‍💻 Autor
-
 **Keyzon Roland**
 - GitHub: [@keyzonroland](https://github.com/keyzonroland)
 
----
-
-⭐ **¡Dale una estrella si te gustó el proyecto!**

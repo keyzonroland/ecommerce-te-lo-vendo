@@ -21,7 +21,7 @@ const products = [
         name: "Auriculares Sony WH-1000XM5",
         description: "Auriculares inalámbricos premium con cancelación de ruido activa",
         price: 249990,
-        image: "ASSETS/images/100360.jpeg"
+        image: "ASSETS/images/100360.jpg"
     },
     {
         id: 4,
@@ -29,7 +29,7 @@ const products = [
         name: "Tablet Apple iPad Air",
         description: "Tablet de 10.9 pulgadas con chip M1 y almacenamiento de 256GB",
         price: 749990,
-        image: "ASSETS/images/100458.jpg"
+        image: "ASSETS/images/100458.jpeg"
     },
     {
         id: 5,
@@ -45,7 +45,7 @@ const products = [
         name: "Teclado Apple Magic Keyboard",
         description: "Teclado inalámbrico con teclas de tijera y Touch ID",
         price: 129990,
-        image: "ASSETS/images/100479.jpg"
+        image: "ASSETS/images/100479.jpeg"
     },
     {
         id: 7,
@@ -53,7 +53,7 @@ const products = [
         name: "Mouse Logitech MX Master 3",
         description: "Mouse ergonómico inalámbrico para profesionales con scroll electromagnético",
         price: 89990,
-        image: "ASSETS/images/100429.jpg"
+        image: "ASSETS/images/100429.png"
     },
     {
         id: 8,
@@ -77,7 +77,7 @@ const products = [
         name: "Disco Duro Seagate 2TB",
         description: "Disco duro externo portátil USB 3.0 de 2TB para respaldo",
         price: 79990,
-        image: "ASSETS/images/100683.jpg"
+        image: "ASSETS/images/100683.png"
     },
     {
         id: 11,
@@ -85,7 +85,7 @@ const products = [
         name: "Consola Nintendo Switch OLED",
         description: "Consola de videojuegos híbrida con pantalla OLED de 7 pulgadas",
         price: 349990,
-        image: "ASSETS/images/100494.jpg"
+        image: "ASSETS/images/100494.jpeg"
     },
     {
         id: 12,
@@ -93,7 +93,7 @@ const products = [
         name: "Bocina JBL Charge 5",
         description: "Altavoz Bluetooth portátil resistente al agua con 20 horas de batería",
         price: 119990,
-        image: "ASSETS/images/100360.jpeg"
+        image: "ASSETS/images/100360.png"
     }
 ];
 
@@ -152,13 +152,18 @@ function addToCart(productId) {
     }
     
     updateCartDisplay();
+    updateCartCounter();
+    showNotification(`${product.name} agregado al carrito`, 'success');
 }
 
 function removeFromCart(productId) {
     const index = cart.findIndex(item => item.id === parseInt(productId));
     if (index > -1) {
+        const removedProduct = cart[index];
         cart.splice(index, 1);
         updateCartDisplay();
+        updateCartCounter();
+        showNotification(`${removedProduct.name} eliminado del carrito`, 'info');
     }
 }
 
@@ -304,6 +309,7 @@ function addSelectedProducts() {
     
     if (addedCount > 0) {
         updateCartDisplay();
+        updateCartCounter();
         showNotification(`Se agregaron ${addedCount} producto(s) al carrito`, 'success');
     } else {
         showNotification('Por favor selecciona al menos un producto', 'warning');
@@ -315,6 +321,7 @@ function clearCart() {
     if (cart.length > 0) {
         cart.length = 0; // Vaciar array
         updateCartDisplay();
+        updateCartCounter();
         showNotification('Carrito limpiado', 'info');
     }
 }
@@ -413,9 +420,56 @@ document.addEventListener('input', function(e) {
         if (cartItem && newQuantity > 0) {
             cartItem.quantity = newQuantity;
             updateCartDisplay();
+            updateCartCounter();
         }
     }
 });
 
+// Función para hacer scroll al carrito
+function scrollToCart() {
+    const carritoSection = document.getElementById('carrito');
+    carritoSection.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+    });
+    
+    // Agregar efecto visual temporal
+    carritoSection.style.backgroundColor = '#f8f9fa';
+    setTimeout(() => {
+        carritoSection.style.backgroundColor = '';
+    }, 1000);
+}
+
+// Función para actualizar el contador del carrito en el navbar
+function updateCartCounter() {
+    const cartCount = document.getElementById('cart-count');
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    
+    cartCount.textContent = totalItems;
+    
+    // Mostrar/ocultar el badge según la cantidad
+    if (totalItems > 0) {
+        cartCount.style.display = 'inline-block';
+        // Agregar animación de pulse cuando se actualiza
+        cartCount.classList.add('animate-pulse');
+        setTimeout(() => {
+            cartCount.classList.remove('animate-pulse');
+        }, 500);
+    } else {
+        cartCount.style.display = 'none';
+    }
+}
+
 // Inicializar carrito vacío
 updateCartDisplay();
+
+// Event listener para el botón del carrito en la navbar
+document.addEventListener('DOMContentLoaded', function() {
+    const cartNavBtn = document.getElementById('cart-nav-btn');
+    if (cartNavBtn) {
+        cartNavBtn.addEventListener('click', scrollToCart);
+    }
+    
+    // Inicializar el contador del carrito
+    updateCartCounter();
+});
