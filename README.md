@@ -1,8 +1,8 @@
-# 🛒 Te lo Vendo - Ecommerce
+ Te lo Vendo - Ecommerce
 
 Tienda online desarrollada con HTML, CSS y JavaScript vanilla con Bootstrap 5. Sistema completo de carrito de compras con cálculo de IVA y cargo por despacho.
 
-## ✨ Características
+ Características
 
 - **12 productos** con información completa (código, nombre, descripción, precio, imagen)
 - **Carrito de compras interactivo** con selección por checkbox
@@ -12,7 +12,7 @@ Tienda online desarrollada con HTML, CSS y JavaScript vanilla con Bootstrap 5. S
 - **Interfaz responsive** con Bootstrap 5
 - **Notificaciones de usuario** para mejor experiencia
 
-## 🚀 Tecnologías
+Tecnologías
 
 - HTML5 semántico
 - CSS3 personalizado
@@ -20,7 +20,7 @@ Tienda online desarrollada con HTML, CSS y JavaScript vanilla con Bootstrap 5. S
 - Bootstrap 5.3.0
 - Font Awesome 6.0.0
 
-## 🎯 Funcionalidades
+Funcionalidades
 
 ### Productos
 - Visualización en grid responsive
@@ -41,25 +41,22 @@ Tienda online desarrollada con HTML, CSS y JavaScript vanilla con Bootstrap 5. S
 - **Cargo Despacho**: 5% si compra < $100.000
 - **Total Final**: Suma de todos los conceptos
 
-## 📱 Responsive Design
+Responsive Design
 
 - **Desktop**: 4 columnas de productos
 - **Tablet**: 3 columnas de productos  
 - **Mobile**: 2 columnas de productos
 - Interfaz optimizada para todos los dispositivos
 
-## 🖥️ Instalación
+Instalación
 
 1. Clona el repositorio:
    ```bash
    git clone https://github.com/keyzonroland/ecommerce-te-lo-vendo.git
    ```
 
-2. Abre `index.html` en tu navegador
 
-3. ¡Disfruta comprando!
-
-## 📂 Estructura del Proyecto
+Estructura del Proyecto
 
 ```
 ECOMMERCE-TAREA/
@@ -73,32 +70,4 @@ ECOMMERCE-TAREA/
 └── README.md               # Documentación
 ```
 
-## 💡 Ejemplos de Uso
-
-### Compra Menor a $100.000
-- Productos: $80.000
-- Cargo despacho: $4.000 (5%)
-- **Total**: $84.000
-
-### Compra Mayor a $100.000  
-- Productos: $150.000
-- Despacho: **GRATIS**
-- **Total**: $150.000
-
-## 🎨 Capturas
-
-*Próximamente se agregarán capturas de pantalla*
-
-## 🤝 Contribuciones
-
-Las contribuciones son bienvenidas. Por favor:
-
-1. Fork el proyecto
-2. Crea una rama (`git checkout -b feature/nueva-caracteristica`)
-3. Commit tus cambios (`git commit -m 'Agregar nueva característica'`)
-4. Push a la rama (`git push origin feature/nueva-caracteristica`)
-5. Abre un Pull Request
-
-**Keyzon Roland**
-- GitHub: [@keyzonroland](https://github.com/keyzonroland)
 
